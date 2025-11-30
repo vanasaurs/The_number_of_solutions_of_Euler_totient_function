@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Number of Solutions of Euler-Totient Function</title>
+    
+    <style>
+        body {
+            font-family: "Georgia", "Times New Roman", Times, serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .paper-container {
+            background-color: #fff;
+            padding: 50px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Environment Styles */
+        .theorem, .lemma, .remark, .proof {
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-radius: 4px;
+        }
+
+        .theorem {
+            background-color: #eef4ff;
+            border-left: 4px solid #2c3e50;
+        }
+
+        .theorem-title, .lemma-title {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .theorem-body, .lemma-body {
+            font-style: italic;
+        }
+
+        .lemma {
+            background-color: #fcf6e5;
+            border-left: 4px solid #f39c12;
+        }
+
+        .remark {
+            background-color: #f0f0f0;
+            border-left: 4px solid #7f8c8d;
+        }
+
+        .proof {
+            margin-top: 0;
+            padding-left: 0;
+        }
+
+        .proof-title {
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        .qed {
+            float: right;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        /* List Styles */
+        ul, ol {
+            margin-bottom: 15px;
+            padding-left: 40px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            macros: {
+                R: "\\mathbb{R}",
+                Z: "\\mathbb{Z}",
+                N: "\\mathbb{N}",
+                phiN: "\\phi(n)",
+                eps: "\\epsilon",
+                leg: ["\\left(\\frac{#1}{#2}\\right)", 2] // Custom Legendre symbol macro
+            }
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<div class="paper-container">
+
+    <h1>The Number of Solutions of Euler-Totient Function</h1>
+
+    <p>Let $\phi(n)$ be Euler's totient function, and $A(m)$ be the number of solutions of $\phi(x)=m$. Let $p, q$ always be prime.</p>
+
+    <div class="theorem">
+        <span class="theorem-title">Theorem 1</span>
+        <div class="theorem-body">
+            For each integer $k \ge 2$, there is an integer $m$ with $A(m)=k$.
+        </div>
+    </div>
+
+    <div class="theorem">
+        <span class="theorem-title">Theorem 2</span>
+        <div class="theorem-body">
+            Suppose $A(m)=k$ and $m$ are even. Then there is a number $m'$ such that $A(mm')=k+2$.
+        </div>
+    </div>
+
+    <p><strong>Note:</strong> Theorem 1 follows from Theorem 2 by induction on $k$, where we start with $A(10)=2$ and $A(2)=3$. The central idea of the proof is based on Chen's Theorem, which states the following:</p>
+
+    <div class="theorem">
+        <span class="theorem-title">Theorem (Chen)</span>
+        <div class="theorem-body">
+            For each even natural number $m$ and $X \ge X_0(m)$, there are $\gg X/\log^2 X$ primes $s \in (X/2, X]$, $s \equiv 1 \pmod m$ such that $(s-1)/m$ has at most two prime factors, each of which exceeds $X^{1/10}$.
+        </div>
+    </div>
+
+    <p>Then, the author breaks this theorem into two scenarios:</p>
+    <ol type="i">
+        <li>$(s-1)/m$ is a prime number.</li>
+        <li>$(s-1)/m$ has exactly two prime factors.</li>
+    </ol>
+    <p>Thus, at least one of them must be true.</p>
+
+    <p>For any of the cases, we look at the "trivial solutions," i.e.</p>
+    <ul>
+        <li>In case (i): $q = (s-1)/m$. $A(mq(q-1)) = k+2$, where $\phi(n) = mq(q-1)$ with $n = q^2 \alpha_i$ where $\phi(\alpha_i)=m$ for $i=1,\dots,k$, $n=q(mq+1)$ and $2q(m+1)$.</li>
+        <li>In case (ii): $s = 1+mpq$. $A(mpq(p-1)(q-1)) = k+2$, where $n = p^2 q^2 \alpha_i$, $pq(mpq+1)$ and $2pq(mpq+1)$.</li>
+    </ul>
+
+    <p>Therefore, we must show that the number of pairs $(p,q)$ that make such solutions non-trivial must be $\ll X/\log^2 X$. The method to obtain such a bound is a collaboration of sieve theory and several bounds related to the prime factors of $p-1$. After all, the cases that are more difficult are the ones with $(n,q)=1$, $(n,pq)=p$, or $q$ and $(n,pq)=1$.</p>
+
+    <p>Let's introduce some notations before further developing the logic. Let $P^+(n)$ denote the largest prime factor of $n$ and $P^-(n)$ denote the smallest prime factor of $n$. Let $\omega(n)$ and $\Omega(n)$ count the # of distinct prime factors of $n$ and the # of prime factors counted according to multiplicity, respectively. Let $\Omega(n, U, T)$ denote the # of prime factors $p$ of $n$ s.t. $U \le p < T$ counted according to multiplicity.</p>
+
+    <p>We now introduce the lemma of the so-called "Fundamental Lemma of Brun's Sieve".</p>
+
+    <div class="lemma">
+        <span class="lemma-title">Lemma 1</span>
+        <div class="lemma-body">
+            Suppose $F$ is a polynomial of degree $h \ge 1$ with integer coefficients and a positive leading coefficient. Denote by $\rho(\varpi)$ the number of solutions of $F(n) \equiv 0 \pmod \varpi$. For $2 \le Z \le X$, we have
+            \[
+            \#\{n \le X : P^-(F(n)) > Z\} = X \prod_{\varpi \le Z} \left(1 - \frac{\rho(\varpi)}{\varpi}\right) \{1 + O_h(e^{-\sqrt{\log X}} + e^{-u(\log u - \log \log 3u - \log h - 2)})\}
+            \]
+            where $u = \log X / \log Z$.
+        </div>
+    </div>
+
+    <div class="remark">
+        <strong>Remark:</strong> For $F(n) = an^2+bn+c$, $\rho(\varpi) = 1 + \leg{b^2-4ac}{\varpi}$ is related to the Legendre symbol.
+    </div>
+
+    <div class="lemma">
+        <span class="lemma-title">Lemma 2</span>
+        <div class="lemma-body">
+            Suppose $F(n) = (a_1 n + b_1) \dots (a_h n + b_h)$, where $a_i \in \Z_{>0}$ and $b_i \in \Z$. Suppose
+            \[
+            E := a_1 \dots a_h \prod_{1 \le i < j \le h} (a_i b_j - b_j a_i) \ne 0.
+            \]
+            If $2 \le Z \le X$ and $\log E \le \log^3 X$, then
+            \[
+            \#\{1 \le n \le X : P^-(F(n)) \ge Z\} \ll_h \frac{X}{(\log Z)^h} \left(\frac{E}{\phi(E)}\right)^h \ll_h X (\log \log X)^h (\log Z)^{-h}.
+            \]
+        </div>
+    </div>
+    
+    <p>This follows directly from Lemma 1 by considering the case $\varpi | E$ and bounding the $\varpi | E$ terms.</p>
+
+    <div class="lemma">
+        <span class="lemma-title">Lemma 3</span>
+        <div class="lemma-body">
+            Let $V(X)$ be the number of distinct values of $\phi(n)$ which are $\le X$. Then for every $\epsilon$,
+            \[
+            V(X) \ll_\epsilon \frac{X}{(\log X)^{1-\epsilon}}.
+            \]
+        </div>
+    </div>
+
+    <p>This is the main theorem in "On the normal number of prime factors of $p-1$ and some related problems concerning Euler's $\phi$-function" by Paul Erdős.</p>
+
+    <div class="lemma">
+        <span class="lemma-title">Lemma 4</span>
+        <div class="lemma-body">
+            The number of $n \le X$ divisible by a number $s$ satisfying $s \ge \exp((\log \log X)^2)$ and $P^+(s) \le s^{10/\log \log X}$ is $\ll X/\log^{10} X$.
+        </div>
+    </div>
+
+    <div class="proof">
+        <span class="proof-title">Proof:</span>
+        <p>For $\exp((\log \log X)^2) \le y \le X$, let $G(y)$ denote the number of $s \le y$ with $P^+(s) \le y^{10/\log \log X}$. Let $n$ denote a number with $P^+(n) \le W := y^{10/\log \log X}$, and set $\alpha = 1 - \frac{20 \log \log X}{\log y}$. Then</p>
+        \[
+        G(y) \le \sum_{n \le y} \left(\frac{y}{n}\right)^\alpha < y^\alpha \sum_{n=1}^\infty n^{-\alpha} \le \frac{y}{(\log X)^{20}} \prod_{p \le W} (1 - p^{-\alpha})^{-1} \ll \frac{y}{(\log X)^{20}} \exp\left(\sum_{p \le W} p^{-\alpha}\right).
+        \]
+        <p>By PNT, $\sum_{p \le W} p^{-\alpha} \le (1+o(1)) \int_2^W t^{-\alpha} d\left(\frac{t}{\log t}\right) \le 2 \log \log X$ for sufficiently large $X$. Thus $G(y) \ll y/(\log X)^{18}$, the number in the Lemma is</p>
+        \[
+        \ll \sum_{s \leq X} \frac{X}{s} = X \int \frac{1}{t} dG(t) \ll \frac{X}{(\log X)^{10}}. \tag*{$\square$}
+        \]
+    </div>
+
+    <p>Using Lemma 2, we can bound the number of primes $q \in (X/2, X]$ with $s=qm+1$ prime, and $dq+1$ is also a prime with $d,m$ fixed. And this is exactly what happens when $q|n$, $q^2 \nmid n$, and $\phi(n/q)=qm$ have a non-trivial solution, i.e., we have $dq+1 | \phi(n)$, where $dq+1$ is prime. Take $d$ sufficiently large such that $d > 2\alpha_i$ where $\phi(\alpha_i)=m$ for $i=1,\dots,k$. Then it leaves us to check the case $(n,q)=1$ where $\phi(n)=q(q-1)m$, since if $q^2|n$, then $n$ is one of the trivial solutions.</p>
+
+    <div class="lemma">
+        <span class="lemma-title">Lemma 5</span>
+        <div class="lemma-body">
+            Suppose $b=1$ or $b$ is a prime less than $y_0$. Let $N(y)$ be the number of primes $q \in [y/2, y]$ satisfying:
+            <ol type="i">
+                <li>$qbm+1$ is a prime.</li>
+                <li>for some $n$ with $(n,q)=1$, $\phi(n)=mq(q-1)$.</li>
+            </ol>
+            Then $N(y) < y(\log y)^{-2.1}$.
+        </div>
+    </div>
+    <p>The case (i) then follows from Lemma 5.</p>
+
+    <div class="proof">
+        <span class="proof-title">Proof:</span>
+        <p>We remove the cases, as in Lemma 4, for $q-1$, which has such a divisor $s$. For $\phi(n)=mq(q-1)$, $r$ prime with $r|n$ and $r|q-1$. Write $r=1+q s_0$ and $w_0 = \phi(n/r)$. For some factorization of $m=m_1 m_2$, where $m_1 | s_0$ and $m_2 | w_0$. Fix $m_1, m_2$ and let $s=s_0/m_1$ and $w=w_0/m_2$ so that $sw=q-1$. Therefore, it suffices to bound pairs of $(s,w)$ for which $y/2-1 \le sw \le y$ where $wm_2$ is a totient function, subject to the conditions:</p>
+        \[
+        ws+1 = q, \quad (ws+1)mb+1 \text{ is prime}, \quad (ws+1)sm_1+1 = r \text{ is prime}.
+        \]
+        <p>For some bounded $s$, we can apply Lemma 2 with $s$ fixed and satisfying the above conditions, which are prime numbers. However, for a certain range of $s$, we need to fix $w$ in some intervals. It follows that for a fixed $w$, by applying Lemma 2 and its remark, we have a quadratic function; thus, we need to deal with the Legendre symbols.</p>
+    </div>
+
+    <div class="lemma">
+        <span class="lemma-title">Lemma 6</span>
+        <div class="lemma-body">
+            Suppose $y \ge y_0$, $u \ge 1$. $A, B$ and $R$ are positive integers with $R$ being even and $\log(ABR) \le \log^3 U$. Suppose $D(s) = A(A-Bs)$, or $D(s)=As(As-B)$, or $D(s)=A \pm Bs$. Uniformly in $ABR$ and $1 \le c \le 2$, we have
+            \[
+            \sum_{\substack{s \le U\\ s \text{ prime}}} \prod_{\varpi \le y, \varpi \text{ prime}} \left(1 - \frac{1}{\varpi} \leg{D(s)}{\varpi} \right)^c \ll \frac{U (\log \log U)^{1+c}}{\log U}
+            \]
+            and
+            \[
+            \sum_{\substack{s \leq U\\s,sR+1 \ \text{prime}}} \prod_{\varpi \le U, \varpi \text{ prime}} \left(1 - \frac{1}{\varpi} \leg{D(s)}{\varpi} \right)^c \ll \frac{U (\log \log U)^{4+c}}{\log U}.
+            \]
+        </div>
+    </div>
+    
+    <p>The proof of Lemma 6 is based on several previous Lemmas.</p>
+
+    <div class="lemma">
+        <span class="lemma-title">Lemma 7</span>
+        <div class="lemma-body">
+            For each $Q \ge 3$, there is a number $d_Q \gg_A (\log Q)^A$ for every $A>0$, so for some absolute constant $b>0$, the following holds. We have that whenever $|D| \le d_Q$, $D \ne \text{square}$, and $\log Z \le \exp((\log Q)^b)$,
+            \[
+            Q^{\log \epsilon} < \prod_{\varpi \le Z} \left(1 - \frac{1}{\varpi} \leg{D}{\varpi} \right) \ll 1.
+            \]
+            Furthermore, $16 \nmid d_Q$ and $p \nmid d_Q$ hold for all odd primes $p$.
+        </div>
+    </div>
+
+    <div class="proof">
+        <span class="proof-title">Proof:</span>
+        <p>The Prime Number Theorem in Arithmetic Progression tells us that if $z \ge Q^{\log \log Q}$, then</p>
+        \[
+        \pi(z; n, a) = \frac{z}{\phi(n) \log z} (1 + O((\log Q)^{-b}))
+        \]
+        <p>for some absolute constant $b$, $a < b < 1$. Since $-\frac{1}{2} \le h \le \frac{1}{2}$, we look at the sum over $\frac{1}{\varpi} \leg{D}{\varpi}$. Let $D=D_1 D_2$ where $D_2$ is the largest positive odd divisor of $D$. Then</p>
+        \[
+        \leg{D}{\varpi} = (-1)^{(\varpi-1)(D_2-1)/4} \leg{D_1}{\varpi} \leg{\varpi}{D_2} = i_\varpi \leg{\varpi}{D_2},
+        \]
+        <p>where $i_\varpi \in \{-1, 1\}$ depends only on $\varpi$ modulo 8. Thus, we sum over residue classes modulo $8D_2$ of $\varpi$, and we are left with an error term of $O(\frac{\log \log Z}{(\log Q)^b}) = O(1)$.</p>
+        <p>From these two lemmas, combined with Lemma 3, we can bound the case in which we have a quadratic function for modulo $\varpi$. This completes the proof of Theorem 2 in the case (i).</p>
+    </div>
+
+    <p>For case (ii), the steps and Lemmas are similar.</p>
+
+    <div class="lemma">
+        <span class="lemma-title">Lemma 8</span>
+        <div class="lemma-body">
+            Suppose $r,s,t,u$ are positive integers, and $x,y,z$ are positive real numbers satisfying $x \ge y \ge z \ge 2$ and $\log(rstu) \le \log^3 x$. Let
+            \[
+            w_{g,h} = (rg+1)(sh+1)
+            \]
+            and
+            \[
+            F(g,h) = (tw_{g,h}+1)(ugh w_{g,h}+1)gh w_{g,h}.
+            \]
+            Then
+            \[
+            \#\{g \le x, y < h \le 2y : P^-(F(g,h)) > z\} \ll xy \frac{(\log \log x)^6}{(\log z)^6}.
+            \]
+        </div>
+    </div>
+
+    <p>We now introduce an important lemma relating to the distribution of the prime factors of $q-1$. For brevity, write $E(z) = \exp\{(\log x)^z\}$.</p>
+
+    <div class="lemma">
+        <span class="lemma-title">Lemma 9</span>
+        <div class="lemma-body">
+            Let $N \ge 10$ be an integer, put $\delta = 1/N$ and suppose $x^{10} \le y \le x$. The number of primes $p \le y$ that do not satisfy
+            \[
+            \Omega(p-1, E(j\delta), E((j+1)\delta)) \le (\delta + \delta^2) \log \log x \quad (0 \le j \le N-1)
+            \]
+            is $\ll_\delta y (\log x)^{-1-\delta^3/3}$.
+        </div>
+    </div>
+
+    <div class="proof">
+        <span class="proof-title">Proof:</span>
+        <p>By Lemma 4, $\#\{p \le y : P^+(p-1) \le y^{1/\log \log x}\} < y(\log x)^{-10}$. For the remaining $p$, let $q = P^+(p-1)$ and $p-1 = qa$. For fixed $a$, by Lemma 2,</p>
+        \[
+        \#\{q \le y/a : qa+1 \text{ prime}\} \ll \frac{y}{a} \frac{\log \log x}{\log^2(y/a)}.
+        \]
+        <p>Let $I_j = [E(j\delta), E((j+1)\delta)]$, $t = (\delta+\delta^2)\log \log x - 1$. Since $1_{\{\Omega(a, I_j) \ge t\}} \le (1+\delta)^{-t} (1+\delta)^{\Omega(a, I_j)}$, then</p>
+        \[
+        B_j = \sum_{a \le x} \frac{(1+\delta)^{\Omega(a, I_j)}}{a} \ll (\log x)^{(\delta+\delta^2)\log(1+\delta)} \prod_{p \in I_j} \dots \ll (\log x)^{1-0.9\delta^3}.
+        \]
+        <p>Thus, it completes the proof. <span class="qed">◼</span></p>
+    </div>
+
+    <p>Now, we begin to analyze the situation in case (ii). Let $s=1+pqm$ such pairs of $(p,q)$. The author first removes certain parts from $X$ so that he can bound the number of distinct prime divisors for $\phi(n)=mpq(p-1)(q-1)$. Then, by imposing some additional conditions on the set of $(p,q)$ in the set $B$ with $|B| \gg X/\log^2 X$, $s \in (X/2, X]$, and $p,q \in [X^{1/10}, X^{1/2}]$. Let $B$ denote additional conditions that combine with similar steps as for the previous remaining set. We obtain a bound for $(n,q)=1$, allows us to bound the case $(n,pq)=p$ or $q$. Note that one of the additional conditions being imposed is the prime factor distribution condition for $p-1$ in some fixed interval, as stated in Lemma 9.</p>
+
+    <p>Case $(n,pq)=1$: Let $E_j = \exp\{(\log x)^{1-j\delta}\}$, where $\delta=1/N$ and $N$ depend on $m$ being large. For the prime divisors of $n \ge E_{N-1}$, without loss of generality, we assume they divide $n$ to the first power. Let $r_1, \dots, r_M$ be the prime factors of $n$ satisfying $(M \le N)$ $P^-(r_i^*) > E_{N-1}$ where $r_i^* := \frac{r_i-1}{(r_i-1, pq)}$. Then</p>
+    \[
+    r_1^* \dots r_M^* w^* = m(p-1)(q-1)
+    \]
+    <p>where $w = \phi\left(\frac{n}{r_1 \dots r_M}\right)$, $w^* = \frac{w}{(w, pq)}$. Thus, by considering the number of solutions to the above equation, we bound the number of pairs of $(p,q)$. Define $r_i$ ordered by $P^+(r_i^*) \in I_{j_i}$ and such that $1=j_1 \le j_2 \le \dots \le j_M$. Since $j_i \in [1, N-1]$, $N$ depends on $m$, we may fix $j_1, \dots, j_M$ with choices of $O(1)$. We then further partition the prime factors of $p-1, q-1$ into each interval $I_j$ ($1 \le j \le N$).</p>
+    
+    <p>Then, for step $j$, we consider the relation between $I_{j_i}$ and $I_j$ for each prime factor in the interval $I_j$ while fixing the smaller factors $< E_j$. Note that the factors of $p-1, q-1$ and $r_i^*$ must satisfy the condition where $p-1, q-1$ and $r_i^*$ are primes (in the sieve context), so that we can apply the sieve in Lemma 2. Moreover, since $p|r_i-1$ and $q|r_{i'}-1$ for $i, i' \in [1, M]$, this gives a quadratic form, so we apply some bounds related to the Legendre symbol, which are similar to Lemma 6. Therefore, after computing the possible factors for $p-1, q-1$ and $r_i^*$ in each step $j$, we obtain the bound for the solution set for</p>
+    \[
+    r_1^* \dots r_M^* w^* = m(p-1)(q-1)
+    \]
+    <p>i.e., the bound for $(p,q) \in B$ with $(n, pq)=1$. This completes the proof of Theorem 1.</p>
+
+</div>
+
+</body>
+</html>
